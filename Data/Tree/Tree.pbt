@@ -19,7 +19,7 @@ Objects {
   ChildIds: 14713340454944924967
   ChildIds: 10005074784157121906
   ChildIds: 14982843161775482339
-  ChildIds: 15763599380063361367
+  ChildIds: 2414488835058822337
   UnregisteredParameters {
   }
   Collidable_v2 {
@@ -32,13 +32,9 @@ Objects {
   }
 }
 Objects {
-  Id: 15763599380063361367
-  Name: "BigNumbersExamples"
+  Id: 2414488835058822337
+  Name: "Big Number Samples"
   Transform {
-    Location {
-    }
-    Rotation {
-    }
     Scale {
       X: 1
       Y: 1
@@ -46,23 +42,34 @@ Objects {
     }
   }
   ParentId: 4781671109827199097
-  UnregisteredParameters {
-    Overrides {
-      Name: "cs:_BigNumbers"
-      AssetReference {
-        Id: 3864193321981479393
-      }
-    }
-  }
   Collidable_v2 {
     Value: "mc:ecollisionsetting:inheritfromparent"
   }
   Visible_v2 {
     Value: "mc:evisibilitysetting:inheritfromparent"
   }
-  Script {
-    ScriptAsset {
-      Id: 9294827342969378103
+  TemplateInstance {
+    ParameterOverrideMap {
+      key: 13939204338238582646
+      value {
+        Overrides {
+          Name: "Name"
+          String: "Big Number Samples"
+        }
+        Overrides {
+          Name: "Position"
+          Vector {
+          }
+        }
+        Overrides {
+          Name: "Rotation"
+          Rotator {
+          }
+        }
+      }
+    }
+    TemplateAsset {
+      Id: 7610737933642751831
     }
   }
 }
@@ -672,6 +679,7 @@ Objects {
     IsDefault: true
     GameSettings {
       RagdollOnDeath: true
+      EnablePlayerStorage: true
       ChatMode {
         Value: "mc:echatmode:teamandall"
       }

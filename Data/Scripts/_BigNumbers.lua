@@ -2,11 +2,104 @@
   Large Numbers Library
   V1.0 - 1/7/2021
   by Chris
+  
+  This is the main script file, containing the actual logic for large numbers.
+  See the readme for more information on how to use it!
 ]]
 
 
 local BigNumber = {}
 local bnMetaTable = {}
+
+
+local numNames = {
+[6] = "Million",
+[9] = "Billion",
+[12] = "Trillion",
+[15] = "Quadrillion",
+[18] = "Quintillion",
+[21] = "Sextillion",
+[24] = "Septillion",
+[27] = "Octillion",
+[30] = "Nonillion",
+[33] = "Decillion",
+[36] = "Undecillion",
+[39] = "Duodecillion",
+[42] = "Tredecillion",
+[45] = "Quattuordecillion",
+[48] = "Quindecillion",
+[51] = "Sexdecillion",
+[54] = "Septendecillion",
+[57] = "Octodecillion",
+[60] = "Novemdecillion",
+[63] = "Vigintillion",
+[66] = "Unvigintillion",
+[69] = "Duovigintillion",
+[72] = "Trevigintillion",
+[75] = "Quattuorvigintillion",
+[78] = "Quinvigintillion",
+[81] = "Sexvigintillion",
+[84] = "Septenvigintillion",
+[87] = "Octovigintillion",
+[90] = "Novemvigintillion",
+[93] = "Trigintillion",
+[96] = "Untrigintillion",
+[99] = "Duotrigintillion",
+[102] = "Tretrigintillion",
+[105] = "Quattortrigintillion",
+[108] = "Quintrigintillion",
+[111] = "Sextrigintillion",
+[114] = "Septentrigintillion",
+[117] = "Octotregintillion",
+[120] = "Novemtrigintillion"
+}
+
+
+
+
+local numShortNames = {
+[6] = "Mil",
+[9] = "Bil",
+[12] = "Tril",
+[15] = "Quad",
+[18] = "Quintn",
+[21] = "Sext",
+[24] = "Sept",
+[27] = "Oct",
+[30] = "Non",
+[33] = "Dec",
+[36] = "Udec",
+[39] = "Ddec",
+[42] = "Tdec",
+[45] = "Qtdec",
+[48] = "Qnidec",
+[51] = "Sxdec",
+[54] = "Spdec",
+[57] = "Ocdec",
+[60] = "Nvdec",
+[63] = "Vig",
+[66] = "Uvig",
+[69] = "Dvig",
+[72] = "Tvig",
+[75] = "Qtvig",
+[78] = "Qnvig",
+[81] = "Sxvig",
+[84] = "Stvig",
+[87] = "Ocvig",
+[90] = "Nvvig",
+[93] = "Trig",
+[96] = "Untrig",
+[99] = "Duotrig",
+[102] = "Ttrig",
+[105] = "Qttrig",
+[108] = "Qntrig",
+[111] = "Sxtrig",
+[114] = "Sptrig",
+[117] = "Octrig",
+[120] = "Nvtrig"}
+
+local minNumNames = 6
+local maxNumNames = 120
 
 
 -- Handy utility function for trimming preceeding zeros.
@@ -34,6 +127,10 @@ function BigNumber.New(n, sign)
 		raw = n.raw or "0"
 	elseif type(n) == "string" then
 		sign = sign or 1
+		if n:sub(1, 1) == "-" then
+			sign = sign * -1
+			n = n:sub(2)
+		end
 		raw = n -- this could be bad if it has decimals etc
 	else
 		sign = sign or 1
@@ -44,10 +141,7 @@ function BigNumber.New(n, sign)
 		raw = raw,
 		sign = sign,
 	}
-	setmetatable(newBigNumber, bnMetaTable
-
-	)
-	--print(newBigNumber)
+	setmetatable(newBigNumber, bnMetaTable)
 	return newBigNumber
 end
 
@@ -56,13 +150,15 @@ function BigNumber.IsEqual(a, _b)
 	return a.raw == b.raw and a.sign == b.sign
 end
 
-function BigNumber.IsLessThan(a, _b)
-	b = BigNumber.New(_b)
-	return Compare(a, b) == -1
+function BigNumber.IsLessThan(_a, _b)
+  a = BigNumber.New(_a)
+  b = BigNumber.New(_b)
+  return Compare(a, b) == -1
 end
 
-function BigNumber.IsLessThanOrEqual(a, _b)
-	b = BigNumber.New(_b)
+function BigNumber.IsLessThanOrEqual(_a, _b)
+  a = BigNumber.New(_a)
+  b = BigNumber.New(_b)
 	return BigNumber.IsEqual(a, b) or Compare(a, b) == -1
 end
 
@@ -106,14 +202,55 @@ function BigNumber.ToString(self)
 	local prefix = ""
 	if self.sign == -1 then prefix = "-" end
 	return prefix .. self.raw
-	--return "[" .. prefix .. self.raw .. "]"
 end
+
+function BigNumber.AsNumber(self)
+	local num = tonumber(self.raw)
+	return num * self.sign
+end
+
+function BigNumber.AsString(self)
+  return self:ToString()
+end
+
+
+function FindNumPrefix(digitCount, numNameList)
+	local foundDigit = digitCount - 1
+	if foundDigit > maxNumNames then return maxNumNames end
+	while numNameList[foundDigit] == nil do
+		if foundDigit < minNumNames then return 0 end
+		foundDigit = foundDigit - 1
+	end
+	return foundDigit
+end
+
+function BigNumber.AsPrettyString(self)
+	return PrettyStringHelper(self, numNames)
+end
+
+function BigNumber.AsShortString(self)
+	return PrettyStringHelper(self, numShortNames)
+end
+
+
+function PrettyStringHelper(num, nameList)
+	local currentDigits = num.raw:len()
+	local foundDigit = FindNumPrefix(num.raw:len(), nameList)
+	
+	if foundDigit == 0 then return num:ToString() end
+	
+	local numName = nameList[foundDigit]
+	local numString = num.raw:sub(1, currentDigits - foundDigit)
+	if num.sign < 0 then numString = "-" .. numString end
+	return numString .. " " .. numName
+end
+
+
 
 
 function BigNumber.Add(_a, _b)
 	local a = BigNumber.New(_a)
 	local b = BigNumber.New(_b)
-	print("adding " .. tostring(a) .. " + " .. tostring(b))
 	local result = ""
 	local carry = 0
 	if a.sign < 0 and b.sign > 0 then
@@ -127,21 +264,19 @@ function BigNumber.Add(_a, _b)
 		bb = GetDigit(b.raw, b.raw:len() + 1 - i)
 		newDigit = aa + bb + carry
 		carry = 0
-		if newDigit > 10 then
+		if newDigit >= 10 then
 			carry = 1
 			newDigit = newDigit - 10
 		elseif newDigit < 0 then
 			carry = -1
 			newDigit = newDigit + 10
 		end
-		--print(aa, " ", bb, " (", carry, ") = ", newDigit)
 		result = tostring(newDigit) .. result
 	end
 	
 	if carry > 0 then 
 		result = tostring(carry) .. result 
 	end
-	print("Should be: ", tonumber(a.raw) * a.sign + tonumber(b.raw) * b.sign)
 	return BigNumber.New(TrimZeros(result), a.sign)
 end
 
@@ -158,7 +293,6 @@ function SubtractHelper(_a, _b)
 		return BigNumber.Add(a, -b)
 	end
 	
-	print("subtracting " .. tostring(a) .. " - " .. tostring(b))
 	local result = ""
 	local borrow = 0
 	local finalSignFlip = 1
@@ -180,14 +314,9 @@ function SubtractHelper(_a, _b)
 			borrow = -1
 			newDigit = newDigit + 10
 		end
-		--print(aa, " ", bb, " (", borrow, ") = ", newDigit)
 		result = tostring(newDigit) .. result
 	end
 	
-	if borrow < 0 then
-		print("borrow:", borrow)
-		--result = tostring(carry) .. result 
-	end
 	return BigNumber.New(TrimZeros(result), a.sign * finalSignFlip)
 end
 
@@ -195,8 +324,6 @@ end
 function BigNumber.Multiply(_a, _b)
 	local a = BigNumber.New(_a)
 	local b = BigNumber.New(_b)
-	print("mult:", a,b)
-
 	preCarryResults = {}
 	for i_a = 1, a.raw:len() do
 		digit_a = GetDigit(a.raw, a.raw:len() + 1 - i_a)
@@ -229,7 +356,6 @@ end
 function BigNumber.Divide(_a, _b)
 	local a = BigNumber.New(_a)
 	local b = BigNumber.New(_b)
-	print("Dividing ", a, b)
 	local div, mod = DivideHelper(a, b)
 	return div
 end
@@ -238,15 +364,10 @@ end
 function BigNumber.Modulo(_a, _b)
 	local a = BigNumber.New(_a)
 	local b = BigNumber.New(_b)
-	print("Dividing ", a, b)
 	local div, mod = DivideHelper(a, b)
 	return mod
 end
 
-
-function BigNumber.ToDo(self, other)
-	print("Todo")
-end
 
 -- rounds the big number a up to the next 10s digit
 function RoundUp(a)
@@ -294,11 +415,11 @@ function DivideHelper(a, b)
 
 	table.remove(stepList)
 	local div = table.remove(stepList)
+	if div == nil then div = BigNumber.New(0) end
 	local check = 0
 	while #stepList > 0 do
 		local currentStep = table.remove(stepList)
 		check = div * b
-		--print(currentStep, div, "   ", check, " -- ", a)
 		if check == a then
 			break
 		elseif check < a then
@@ -320,11 +441,6 @@ function DivideHelper(a, b)
 end
 
 
-function BigNumber.Connect(self, func)
-	self.listeners[func] = true
-	return Listener.New(self, func)
-end
-
 
 bnMetaTable = {
 	__index = BigNumber,
@@ -336,10 +452,9 @@ bnMetaTable = {
 	__unm = BigNumber.Invert,
 	__eq = BigNumber.IsEqual,
 	__lt = BigNumber.IsLessThan,
---	__le = BigNumber.IsLessThanOrEqual,
+	__le = BigNumber.IsLessThanOrEqual,
 	__tostring = BigNumber.ToString,
 }
-
 
 return {
 	New = BigNumber.New
