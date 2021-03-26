@@ -1,6 +1,6 @@
 <div align="center">
 
-# CC-Big- Numbers
+# CC-Big-Numbers
 
 A Lua library for handling very large numbers. Can also print them out as pretty strings!
 
