@@ -19,6 +19,9 @@ Assets {
             Z: 1
           }
         }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
         Folder {
           BundleDummy {
             ReferencedAssets {
@@ -40,5 +43,5 @@ Assets {
     Version: "1.0.0"
     Description: "A Lua library for handling very large numbers.  Can also print them out as pretty strings!\r\n\r\nHave you ever wanted to multiply 2626119837221216553345 by 2236673?  Well now you can!  (And get an answer with all the digits and full percision)\r\n\r\nGreat for games with large counters or scores!"
   }
-  SerializationVersion: 73
+  SerializationVersion: 100
 }
