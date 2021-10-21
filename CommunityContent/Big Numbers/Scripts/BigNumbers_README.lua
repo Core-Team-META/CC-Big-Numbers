@@ -1,4 +1,4 @@
-﻿--[[
+--[[
   Big Numbers library
   V1.0 - 1/19/2021
   by Chris

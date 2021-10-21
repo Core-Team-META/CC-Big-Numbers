@@ -1,5 +1,5 @@
 Assets {
-  Id: 15151026789238977947
+  Id: 13578253924809534360
   Name: "BigNumbersTests"
   PlatformAssetType: 3
   TextAsset {
@@ -7,7 +7,7 @@ Assets {
       Overrides {
         Name: "cs:_BigNumbers"
         AssetReference {
-          Id: 3864193321981479393
+          Id: 3545208842119120082
         }
       }
     }

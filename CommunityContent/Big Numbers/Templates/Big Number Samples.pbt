@@ -1,5 +1,5 @@
 Assets {
-  Id: 7610737933642751831
+  Id: 17938712406876712665
   Name: "Big Number Samples"
   PlatformAssetType: 5
   TemplateAsset {
@@ -48,7 +48,7 @@ Assets {
           Overrides {
             Name: "cs:_BigNumbers"
             AssetReference {
-              Id: 3864193321981479393
+              Id: 3545208842119120082
             }
           }
         }
@@ -60,7 +60,7 @@ Assets {
         }
         Script {
           ScriptAsset {
-            Id: 9294827342969378103
+            Id: 10985916306021813787
           }
         }
       }
@@ -87,7 +87,7 @@ Assets {
         }
         Script {
           ScriptAsset {
-            Id: 15151026789238977947
+            Id: 13578253924809534360
           }
         }
       }
@@ -114,7 +114,7 @@ Assets {
         }
         Script {
           ScriptAsset {
-            Id: 14585145607728185523
+            Id: 2585205311033221964
           }
         }
       }
@@ -123,6 +123,9 @@ Assets {
       AssetType: "None"
       AssetId: "None"
     }
+  }
+  Marketplace {
+    Description: "A Lua library for handling very large numbers.  Can also print them out as pretty strings!\r\n\r\nHave you ever wanted to multiply 2626119837221216553345 by 2236673?  Well now you can!  (And get an answer with all the digits and full percision)\r\n\r\nGreat for games with large counters or scores!"
   }
   SerializationVersion: 73
   DirectlyPublished: true
