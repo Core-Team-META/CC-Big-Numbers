@@ -116,7 +116,7 @@ local max_int = 99999999999999999
 local max_int_digits = tostring(max_int):len()
 
 function BigNumber.CanBeInt(self)
-	return a.raw:len() <= max_int_digits
+	return self.raw:len() <= max_int_digits
 end
 
 
@@ -154,20 +154,20 @@ function BigNumber.New(n, sign)
 end
 
 function BigNumber.IsEqual(a, _b)
-	b = BigNumber.New(_b)
-	return a.raw == b.raw and a.sign == b.sign
+  local b = BigNumber.New(_b)
+  return a.raw == b.raw and a.sign == b.sign
 end
 
 function BigNumber.IsLessThan(_a, _b)
-  a = BigNumber.New(_a)
-  b = BigNumber.New(_b)
+  local a = BigNumber.New(_a)
+  local b = BigNumber.New(_b)
   return Compare(a, b) == -1
 end
 
 function BigNumber.IsLessThanOrEqual(_a, _b)
-  a = BigNumber.New(_a)
-  b = BigNumber.New(_b)
-	return BigNumber.IsEqual(a, b) or Compare(a, b) == -1
+  local a = BigNumber.New(_a)
+  local b = BigNumber.New(_b)
+  return BigNumber.IsEqual(a, b) or Compare(a, b) == -1
 end
 
 
